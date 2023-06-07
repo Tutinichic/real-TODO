@@ -10,6 +10,10 @@
   @apply bg-violet-600 hover:bg-violet-700 py-3 px-6 text-slate-50 rounded-lg w-auto transition;
 }
 
+.btn:active {
+  @apply scale-95;
+}
+
 @layer components {
   .tasksList > li:first-of-type article {
     @apply bg-yellow-500 text-slate-100;
