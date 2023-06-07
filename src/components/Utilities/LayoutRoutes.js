@@ -34,7 +34,7 @@ const LayoutRoutes = ({ title, tasks }) => {
             <button className="bg-rose-200 text-rose-600 px-4 py-1 rounded-t-md ml-auto mr-4 block">
               {task.dir}
             </button>
-            <div className="bg-slate-100 h-64 rounded-lg p-4 flex flex-col text-left transition hover:shadow-lg hover:shadow-slate-300">
+            <article className="bg-slate-100 h-64 rounded-lg p-4 flex flex-col text-left transition hover:shadow-lg hover:shadow-slate-300">
               <span className="mb-4 block font-medium">{task.title}</span>
               <p className="description text-slate-400">{task.description}</p>
               <span className="mt-auto flex w-full">
@@ -53,17 +53,17 @@ const LayoutRoutes = ({ title, tasks }) => {
                 <div className="ml-auto">
                   <Tooltip txt="mark as important" className="mr-2">
                     <button>
-                      <img src={StarLine} />
+                      <img src={StarLine} alt="" />
                     </button>
                   </Tooltip>
                   <Tooltip txt="delete task">
                     <button>
-                      <img src={Trash} />
+                      <img src={Trash} alt="" />
                     </button>
                   </Tooltip>
                 </div>
               </div>
-            </div>
+            </article>
           </li>
         ))}
         <li>

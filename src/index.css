@@ -13,3 +13,19 @@
     @apply border-black;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .tasksList > li:first-of-type article {
+    @apply bg-yellow-500 text-slate-100;
+  }
+  .tasksList > li:first-of-type article .description {
+    @apply text-black;
+  }
+  .tasksList > li:first-of-type article > div {
+    @apply border-black;
+  }
+}
