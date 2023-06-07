@@ -6,7 +6,9 @@ import TaskItem from "../TasksSection/TaskItem";
 
 const LayoutRoutes = ({ title, tasks }) => {
   const [isListInView1, setIsListInView1] = useState(false);
+
   const [sortedBy, setSortedBy] = useState("");
+
   const [sortedTasks, setSortedTasks] = useState(tasks);
 
   const dispatch = useAppDispatch();
@@ -61,7 +63,7 @@ const LayoutRoutes = ({ title, tasks }) => {
       if (!completed) {
         return sorted.reverse();
       }
-
+      
       return tasks;
     };
 
@@ -101,7 +103,7 @@ const LayoutRoutes = ({ title, tasks }) => {
         <li>
           <button
             onClick={openModalHandler}
-            className={`border-2 border-slate-300 text-slate-400 w-full rounded-lg border-dashed transition hover:bg-slate-300 ${
+            className={`border-2 border-slate-300 text-slate-400 w-full rounded-lg border-dashed transition hover:bg-slate-300 hover:text-slate-500 ${
               isListInView1 ? "h-32" : "h-64"
             }`}
           >

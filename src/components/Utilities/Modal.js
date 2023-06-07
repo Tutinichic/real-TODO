@@ -7,14 +7,6 @@ import { tasksActions } from "../../store/Tasks.store";
 const ModalContent = () => {
   const dispatch = useAppDispatch();
 
-  const titleInputRef = useRef(null);
-  const descriptionTextRef = useRef(null);
-  const dateInputRef = useRef(null);
-  const isTitleValid = useRef(false);
-  const isDateValid = useRef(false);
-
-  const [isImportant, setIsImportant] = useState(false);
-
   const today = new Date();
   let day = today.getDate();
   let month = today.getMonth() + 1;
@@ -29,18 +21,26 @@ const ModalContent = () => {
   const todayDate = year + "-" + month + "-" + day;
   const maxDate = year + 1 + "-" + month + "-" + day;
 
+  const titleInputRef = useRef(null);
+  const descriptionTextRef = useRef(null);
+  const [date, setDate] = useState(todayDate);
+  const isTitleValid = useRef(false);
+  const isDateValid = useRef(false);
+
+  const [isImportant, setIsImportant] = useState(false);
+
   const addNewTaskHandler = (event) => {
     event.preventDefault();
 
     isTitleValid.current = titleInputRef.current.value.trim().length > 0;
-    isDateValid.current = dateInputRef.current.value.trim().length > 0;
+    isDateValid.current = date.trim().length > 0;
 
     if (isTitleValid.current && isDateValid.current) {
       const newTask = {
         title: titleInputRef.current.value,
         dir: "Home",
         description: descriptionTextRef.current.value,
-        date: dateInputRef.current.value,
+        date: date,
         completed: false,
         important: isImportant,
         id: Date.now().toString(),
@@ -87,7 +87,8 @@ const ModalContent = () => {
               <input
                 type="date"
                 className="w-full"
-                ref={dateInputRef}
+                value={date}
+                onChange={({ target }) => setDate(target.value)}
                 min={todayDate}
                 max={maxDate}
               />

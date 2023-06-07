@@ -17,12 +17,17 @@ const TaskItem = ({ isListInView1, task }) => {
     dispatch(tasksActions.removeTask(id));
   };
 
-  const fullDate = new Date(task.date);
-  const month = fullDate.getMonth();
+  const fullDate = new Date(task.date.replaceAll("-", "/"));
+  const month = fullDate.getMonth() + 1;
   const day = fullDate.getDate();
   const year = fullDate.getFullYear();
 
-  const dateFormated = month + "/" + day + "/" + year;
+  const dateFormated =
+    month.toString().padStart(2, "0") +
+    "/" +
+    day.toString().padStart(2, "0") +
+    "/" +
+    year;
 
  return (
   <li key={task.id}>
