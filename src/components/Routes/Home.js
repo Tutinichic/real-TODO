@@ -1,5 +1,5 @@
 import React from "react";
-import LayoutRoutes from "../Utilities/LayoutRoutes";
+import LayoutRoutes from "../Utilities/LayoutRoutes.js";
 
 const tasksList = [
   {
