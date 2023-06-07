@@ -1,7 +1,7 @@
 import React from "react";
-import { ReactComponent as IconBell } from "../../assets/bell.svg";
-import { ReactComponent as Search } from "../../assets/search.svg";
-import Tooltip from "../Utilities/Tooltip";
+import IconBell from "../../assets/bell.svg";
+import Search from "../../assets/search.svg";
+import Tooltip from "../Utilities/Tooltip.js";
 
 const classHasNotification =
   "after:content-[''] after:w-2 after:h-2 after:bg-rose-500 block after:rounded-full after:absolute after:bottom-3/4  after:left-3/4";
@@ -17,18 +17,22 @@ const HeaderTasks = () => {
           placeholder="Search task"
           className="bg-slate-100 rounded-lg p-3 w-full outline-transparent hover:outline-violet-600 focus:outline-violet-600 transition"
         />
-        <Search className="absolute w-5 right-4 top-3.5 text-slate-400" />
+        <img
+          src={Search}
+          className="absolute w-5 right-4 top-3.5 text-slate-400"
+          alt=""
+        />
       </form>
-      <time datetime="2022-08-02" className="flex-1 text-center">
-        Hello 
-      </time>
+      <span dateTime="2022-08-02" className="flex-1 text-center">
+        Hello
+      </span>
       <div className="flex flex-1">
         <Tooltip txt="show more" className="mr-6 ml-auto">
           <button
             className={`relative ${classHasNotification}`}
             title="notifications"
           >
-            <IconBell className="fill-orange-500 w-6 h-6" />
+            <img src={IconBell} className="fill-orange-500 w-6 h-6" alt="" />
           </button>
         </Tooltip>
       </div>

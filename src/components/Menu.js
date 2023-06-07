@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import BtnAddTask from "./Utilities/BtnAddTask";
+import BtnAddTask from "./Utilities/BtnAddTask.js";
 
 const links = [
   {
@@ -38,7 +38,7 @@ const Menu = () => {
       <nav>
         <ul className="grid gap-4">
           {links.map((link) => (
-            <li>
+            <li key={link.path}>
               <NavLink
                 to={link.path}
                 className={({ isActive }) => (isActive ? classLinkActive : "")}

@@ -1,7 +1,7 @@
 import "./App.css";
-import AccountData from "./components/AccountData";
-import Menu from "./components/Menu";
-import TasksSection from "./components/TasksSection/TasksSection";
+import AccountData from "./components/AccountData.js";
+import Menu from "./components/Menu.js";
+import TasksSection from "./components/TasksSection/TasksSection.js";
 
 function App() {
   return (
