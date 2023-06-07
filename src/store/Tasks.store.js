@@ -51,6 +51,9 @@ const tasksSlice = createSlice({
       );
       newTaskFavorited.important = !newTaskFavorited.important;
     },
+    deleteAllTasks(state) {
+      state.tasks = [];
+    },
   },
 });
 
