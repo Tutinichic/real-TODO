@@ -51,7 +51,7 @@ const AccountData = () => {
       </div>
 
       {todaysTasks.length === 0 && (
-        <span className="mt-6 block pt-4 border-t-slate-800 border-t-2">
+        <span className="mt-6 block pt-4 border-t-slate-200 dark:border-t-slate-800 border-t-2">
           No tasks today
         </span>
       )}

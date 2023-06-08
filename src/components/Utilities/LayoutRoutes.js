@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { modalActions } from "../../store/Modal.store";
 import ButtonsSort from "../TasksSection/ButtonsSort";
-import TaskItem from "../TasksSection/TaskItem";
+import TaskItem from "../TasksSection/TaskItem/TaskItem";
 
 const LayoutRoutes = ({ title, tasks }) => {
   const [isListInView1, setIsListInView1] = useState(false);
@@ -14,7 +14,7 @@ const LayoutRoutes = ({ title, tasks }) => {
   const dispatch = useAppDispatch();
 
   const openModalHandler = () => {
-    dispatch(modalActions.openModalHandler());
+    dispatch(modalActions.openModalCreateTask());
   };
 
   const tasksTitle = `${title} (${tasks.length} ${
