@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import Search from "../../assets/search.svg";
+import useVisibility from "../hooks/useVisibility";
 
 const SearchField = () => {
   const tasks = useAppSelector((state) => state.tasks.tasks);
@@ -9,6 +10,12 @@ const SearchField = () => {
   const searchResultsRef = useRef(null);
   const [searchInputValue, setSearchInputValue] = useState("");
   const [matchedTasks, setMatchedTasks] = useState([]);
+
+  const {
+    elementIsVisible: listResultsVisible,
+    showElement: showListResults,
+    closeElement: closeListResults,
+  } = useVisibility([searchResultsRef.current], () => setSearchInputValue(""));
 
   useEffect(() => {
     const filteredTasks = tasks.filter((task) => {
@@ -22,21 +29,12 @@ const SearchField = () => {
   }, [searchInputValue, tasks]);
 
   useEffect(() => {
-    const checkClick = (e) => {
-      if (!searchResultsRef.current) return;
-      if (
-        e.target !== searchResultsRef.current &&
-        !searchResultsRef.current.contains(e.target)
-      ) {
-        setSearchInputValue("");
-      }
-    };
-
-    document.addEventListener("click", checkClick);
-    return () => {
-      document.removeEventListener("click", checkClick);
-    };
-  }, []);
+    if (searchInputValue.trim().length > 0) {
+      showListResults();
+    } else {
+      closeListResults();
+    }
+  }, [closeListResults, searchInputValue, showListResults]);
 
   return (
     <form className="flex-1 relative">
@@ -51,7 +49,7 @@ const SearchField = () => {
         className="inputStyles w-full"
       />
       <img src={Search} alt="" className="absolute w-5 right-4 top-3.5 text-slate-400" />
-      {matchedTasks.length > 0 && (
+      {listResultsVisible && (
         <ul className="absolute bg-slate-100 rounded-md w-full top-14 p-3 divide-y-2 divide-slate-200 dark:bg-slate-800 dark:divide-slate-700">
           {matchedTasks.map((task) => (
             <li key={task.id} className="py-2">

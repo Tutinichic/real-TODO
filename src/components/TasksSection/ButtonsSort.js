@@ -2,6 +2,13 @@ import React from "react";
 import IconView1 from "../../assets/view-1.svg";
 import IconView2 from "../../assets/view-2.svg";
 
+const sortValues = [
+  { value: "min-date", title: "New" },
+  { value: "max-date", title: "Last" },
+  { value: "completed-first", title: "Completed first" },
+  { value: "uncompleted-first", title: "Uncompleted first" },
+];
+
 const ButtonsSort = ({
   isListInView1,
   setIsListInView1,
@@ -24,10 +31,15 @@ const ButtonsSort = ({
         <option value="" disabled>
           Sort by
         </option>
-        <option value="min-date">New</option>
-        <option value="max-date">Last</option>
-        <option value="completed-first">Completed first</option>
-        <option value="uncompleted-first">Uncompleted first</option>
+        {sortValues.map((val) => (
+          <option
+            key={val.value}
+            value={val.value}
+            className="bg-slate-100 dark:bg-slate-800"
+          >
+            {val.title}
+          </option>
+        ))}
       </select>
     </div>
   );

@@ -6,7 +6,7 @@ const BtnAddTask = ({ className }) => {
   const dispatch = useAppDispatch();
 
   const onOpenModal = () => {
-    dispatch(modalActions.openModalHandler());
+    dispatch(modalActions.openModalCreateTask());
   };
   return (
     <>

@@ -4,7 +4,7 @@ const initialState = {
   tasks: [
     {
       title: "Wash the dishes",
-      dir: "Test2",
+      dir: "School",
       description: "This is the description for this task.",
       date: "2022-10-08",
       completed: false,
@@ -13,7 +13,7 @@ const initialState = {
     },
     {
       title: "Do homework",
-      dir: "Test2",
+      dir: "Home",
       description: "This is the description for this task.",
       date: "2022-10-08",
       completed: true,
@@ -22,7 +22,7 @@ const initialState = {
     },
     {
       title: "Wash the dishes",
-      dir: "Test4",
+      dir: "Home",
       description: "This is the description for this task.",
       date: "2024-10-08",
       completed: true,
@@ -61,6 +61,20 @@ const tasksSlice = createSlice({
       );
       newTaskFavorited.important = !newTaskFavorited.important;
     },
+    editTask(state, action) {
+      const taskId = action.payload.id;
+
+      const newTaskEdited = state.tasks.find((task) => task.id === taskId);
+      const indexTask = state.tasks.indexOf(newTaskEdited);
+      state.tasks[indexTask] = action.payload;
+    },
+    toggleTaskCompleted(state, action) {
+      const taskId = action.payload;
+
+      const currTask = state.tasks.find((task) => task.id === taskId);
+
+      currTask.completed = !currTask.completed;
+    },
     deleteAllTasks(state) {
       state.tasks = [];
     },
@@ -69,7 +83,7 @@ const tasksSlice = createSlice({
       const directoryAlreadyExists =
         state.directories.includes(newDirectoryName);
       if (directoryAlreadyExists) return;
-      state.directories = [...state.directories, newDirectoryName];
+      state.directories = [newDirectoryName, ...state.directories];
     },
   },
 });
