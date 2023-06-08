@@ -7,8 +7,30 @@ TODO-List is a web application designed for efficient task management and organi
 
 ## How to run
 
-Will be add soon
+```bash
+$ git clone https://github.com/Tutinichic/real-todo.git
+``` 
+```bash
+$ cd real-todo
+``` 
+```bash
+$ npm install
+``` 
+(for tests)
+```bash
+$ npm test(for tests)
+``` 
+```bash
+$ npm start
+``` 
 
 ## Features
 
-Will be add soon
+- Create, edit, and delete tasks
+- Search tasks by name
+- Sorting tasks
+- Task organization in folders
+- Display and edit tags
+- Task progress tracking
+- Changing fields after task creation
+- Task navigation
