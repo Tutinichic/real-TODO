@@ -83,7 +83,7 @@ const LayoutRoutes = ({ title, tasks }) => {
 
   return (
     <section>
-      <h1 className="font-medium my-8 text-2xl">
+      <h1 className="font-medium my-8 text-2xl dark:text-slate-200">
         {title} ({tasks.length} tasks)
       </h1>
       <ButtonsSort

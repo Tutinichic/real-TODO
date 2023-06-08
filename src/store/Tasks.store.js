@@ -29,6 +29,15 @@ const initialState = {
       important: false,
       id: "hdg9M",
     },
+    {
+      title: "Test",
+      dir: "Test",
+      description: "This is the description for this task.",
+      date: "2023-06-08",
+      completed: false,
+      important: false,
+      id: "dhsD1",
+    },
   ],
 };
 
