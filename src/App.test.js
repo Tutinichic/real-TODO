@@ -7,8 +7,17 @@ import { modalActions } from "./store/Modal.store";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 import App from "./App.js";
+import { renderHook } from "@testing-library/react-hooks";
+
 
 import DarkMode from "./components/AccountSection/DarkMode";
+
+
+import useCompletedTasks from "./components/hooks/useCompletedTasks";
+import useDate from "./components/hooks/useDate";
+import useSortTasks from "./components/hooks/useSortTasks";
+import useVisibility from "./components/hooks/useVisibility";
+
 
 
 import BtnAddTask from "./components/Utilities/BtnAddTask";
@@ -36,6 +45,115 @@ jest.mock("react-dom", () => ({
 
 
 
+
+
+test("updates element visibility correctly", () => {
+  const { result } = renderHook(() => useVisibility());
+
+  expect(result.current.elementIsVisible).toBe(false);
+
+  result.current.showElement();
+  expect(result.current.elementIsVisible).toBe(true);
+
+  result.current.closeElement();
+  expect(result.current.elementIsVisible).toBe(false);
+});
+
+describe("useSortTasks", () => {
+  test("returns tasks in the original order when sortedBy is empty", () => {
+    const tasks = [
+      { id: 1, title: "Task 1", date: "2022-01-01" },
+      { id: 2, title: "Task 2", date: "2023-01-01" },
+      { id: 3, title: "Task 3", date: "2021-01-01" },
+    ];
+
+    const { result } = renderHook(() => useSortTasks(tasks));
+    const { sortedBy, setSortedBy, sortedTasks } = result.current;
+
+    setSortedBy("");
+
+    expect(sortedBy).toBe("");
+    expect(sortedTasks).toEqual(tasks);
+  });
+});
+
+describe("useDate", () => {
+  test("returns formatted date with leading zeros for single-digit month and day", () => {
+    const date = "2022-02-05";
+    const formattedDate = useDate(date);
+    expect(formattedDate).toEqual("02/05/2022");
+  });
+
+  test("returns formatted date with maximum year digits", () => {
+    const date = "1000-01-01";
+    const formattedDate = useDate(date);
+    expect(formattedDate).toEqual("01/01/1000");
+  });
+
+  test("returns formatted date for different date formats", () => {
+    const date1 = "2022-12-25";
+    const formattedDate1 = useDate(date1);
+    expect(formattedDate1).toEqual("12/25/2022");
+
+    const date2 = "2022/12/25";
+    const formattedDate2 = useDate(date2);
+    expect(formattedDate2).toEqual("12/25/2022");
+
+    const date3 = "2022-05-10";
+    const formattedDate3 = useDate(date3);
+    expect(formattedDate3).toEqual("05/10/2022");
+  });
+});
+
+describe("useCompletedTasks", () => {
+  test("returns filtered tasks with completed: true", () => {
+    const tasks = [
+      { id: 1, title: "Task 1", completed: true },
+      { id: 2, title: "Task 2", completed: false },
+      { id: 3, title: "Task 3", completed: true },
+    ];
+
+    const { result } = renderHook(() => useCompletedTasks({ tasks, done: true }));
+
+    expect(result.current.tasks).toEqual([
+      { id: 1, title: "Task 1", completed: true },
+      { id: 3, title: "Task 3", completed: true },
+    ]);
+  });
+
+  test("returns filtered tasks with completed: false", () => {
+    const tasks = [
+      { id: 1, title: "Task 1", completed: true },
+      { id: 2, title: "Task 2", completed: false },
+      { id: 3, title: "Task 3", completed: true },
+    ];
+
+    const { result } = renderHook(() => useCompletedTasks({ tasks, done: false }));
+
+    expect(result.current.tasks).toEqual([
+      { id: 2, title: "Task 2", completed: false },
+    ]);
+  });
+
+  test("returns an empty array when no tasks are provided", () => {
+    const tasks = [];
+
+    const { result } = renderHook(() => useCompletedTasks({ tasks, done: true }));
+
+    expect(result.current.tasks).toEqual([]);
+  });
+
+  test("returns an empty array when no tasks match the completion status", () => {
+    const tasks = [
+      { id: 1, title: "Task 1", completed: false },
+      { id: 2, title: "Task 2", completed: false },
+    ];
+
+    const { result } = renderHook(() => useCompletedTasks({ tasks, done: true }));
+
+    expect(result.current.tasks).toEqual([]);
+  });
+});
 
 describe("DarkMode", () => {
   test("renders the component", () => {
