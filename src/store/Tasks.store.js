@@ -1,45 +1,67 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const defaultTasks = [
+  {
+    title: "Test 1",
+    important: false,
+    description: "Test",
+    date: "2023-03-06",
+    dir: "Main",
+    completed: true,
+    id: "t1",
+  },
+  {
+    title: "Test 2",
+    important: true,
+    description: "Test Test Test",
+    date: "2322-06-25",
+    dir: "Main",
+    completed: true,
+    id: "t2",
+  },
+  {
+    title: "Test 3",
+    important: true,
+    description: "TestTestTestTest",
+    date: "2022-07-21",
+    dir: "Main",
+    completed: false,
+    id: "t3",
+  },
+];
+
+const getSavedDirectories = () => {
+  let dirList = [];
+  if (localStorage.getItem("directories")) {
+    dirList = JSON.parse(localStorage.getItem("directories"));
+    const mainDirExists = dirList.some((dir) => dir === "Main");
+    if (!mainDirExists) {
+      dirList.push("Main");
+    }
+  } else {
+    dirList.push("Main");
+  }
+
+  if (localStorage.getItem("tasks")) {
+    const savedTasksList = JSON.parse(localStorage.getItem("tasks"));
+    let dirNotSaved = [];
+    savedTasksList.forEach((task) => {
+      if (!dirList.includes(task.dir)) {
+        if (!dirNotSaved.includes(task.dir)) {
+          dirNotSaved.push(task.dir);
+        }
+      }
+    });
+    dirList = [...dirList, ...dirNotSaved];
+  }
+  return dirList;
+};
+
 const initialState = {
-  tasks: [
-    {
-      title: "Wash the dishes",
-      dir: "School",
-      description: "This is the description for this task.",
-      date: "2022-10-08",
-      completed: false,
-      important: false,
-      id: "dY7aN",
-    },
-    {
-      title: "Do homework",
-      dir: "Home",
-      description: "This is the description for this task.",
-      date: "2022-10-08",
-      completed: true,
-      important: true,
-      id: "hYsk8",
-    },
-    {
-      title: "Wash the dishes",
-      dir: "Home",
-      description: "This is the description for this task.",
-      date: "2024-10-08",
-      completed: true,
-      important: false,
-      id: "hdg9M",
-    },
-    {
-      title: "Test",
-      dir: "Test",
-      description: "This is the description for this task.",
-      date: "2023-06-08",
-      completed: false,
-      important: false,
-      id: "dhsD1",
-    },
-  ],
-  directories: ["Home", "School", "Main"],
+  tasks: localStorage.getItem("tasks")
+    ? JSON.parse(localStorage.getItem("tasks"))
+    : defaultTasks,
+  directories: getSavedDirectories(),
 };
 
 const tasksSlice = createSlice({
@@ -75,8 +97,9 @@ const tasksSlice = createSlice({
 
       currTask.completed = !currTask.completed;
     },
-    deleteAllTasks(state) {
+    deleteAllData(state) {
       state.tasks = [];
+      state.directories = ["Main"];
     },
     createDirectory(state, action) {
       const newDirectory = action.payload;
@@ -110,3 +133,38 @@ const tasksSlice = createSlice({
 
 export const tasksActions = tasksSlice.actions;
 export default tasksSlice.reducer;
+
+export const tasksMiddleware = (store) => (next) => (action) => {
+  const nextAction = next(action);
+  const actionChangeOnlyDirectories =
+    tasksActions.createDirectory.match(action);
+
+  const isADirectoryAction =
+    action.type.toLowerCase().includes("directory");
+
+  if (action.type.startsWith("tasks/") && !actionChangeOnlyDirectories) {
+    const tasksList = store.getState().tasks.tasks;
+    localStorage.setItem("tasks", JSON.stringify(tasksList));
+  }
+  if (action.type.startsWith("tasks/") && isADirectoryAction) {
+    const dirList = store.getState().tasks.directories;
+    localStorage.setItem("directories", JSON.stringify(dirList));
+  }
+
+  if (tasksActions.deleteAllData.match(action)) {
+    localStorage.removeItem("tasks");
+    localStorage.removeItem("directories");
+    localStorage.removeItem("darkmode");
+  }
+
+  if (tasksActions.removeTask.match(action)) {
+    console.log(JSON.parse(localStorage.getItem("tasks")));
+    if (localStorage.getItem("tasks")) {
+      const localStorageTasks = JSON.parse(localStorage.getItem("tasks"));
+      if (localStorageTasks.length === 0) {
+        localStorage.removeItem("tasks");
+      }
+    }
+  }
+  return nextAction;
+};

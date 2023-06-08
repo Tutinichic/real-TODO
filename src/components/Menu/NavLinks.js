@@ -16,11 +16,11 @@ const links = [
   },
   {
     name: "Tasks done",
-    path: "/done",
+    path: "/completed",
   },
   {
     name: "Upcoming tasks",
-    path: "/upcoming",
+    path: "/uncompleted",
   },
 ];
 

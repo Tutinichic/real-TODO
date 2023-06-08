@@ -4,6 +4,7 @@ import { useAppSelector } from "../../store/hooks";
 
 const Home = () => {
   const tasks = useAppSelector((state) => state.tasks.tasks);
+
   return <LayoutRoutes title="All tasks" tasks={tasks}></LayoutRoutes>;
 };
 

@@ -4,25 +4,20 @@ import IconView2 from "../../assets/view-2.svg";
 
 const sortValues = [
   { value: "order-added", title: "Order added" },
-  { value: "min-date", title: "New" },
-  { value: "max-date", title: "Last" },
+  { value: "min-date", title: "Earlier first" },
+  { value: "max-date", title: "Later first" },
   { value: "completed-first", title: "Completed first" },
   { value: "uncompleted-first", title: "Uncompleted first" },
 ];
 
-const ButtonsSort = ({
-  isListInView1,
-  setIsListInView1,
-  sortedBy,
-  setSortedBy,
-}) => {
+const ButtonsSort = ({ isListInView1, setIsListInView1, sortedBy, setSortedBy }) => {
   return (
     <div className="flex children-styles">
-      <button onClick={() => setIsListInView1(true)}>
-        <img src={IconView1} alt="" className={isListInView1 ? "text-violet-600" : ""} />
+      <button onClick={() => setIsListInView1(true)} title="view in list">
+        <img src={IconView1} alt="" />
       </button>
-      <button onClick={() => setIsListInView1(false)}>
-        <img src={IconView2} alt="" className={!isListInView1 ? "text-violet-600" : ""} />
+      <button onClick={() => setIsListInView1(false)} title="view in grid">
+        <img src={IconView2} alt="" />
       </button>
       <select
         className="ml-auto inputStyles"
@@ -30,7 +25,7 @@ const ButtonsSort = ({
         onChange={({ target }) => setSortedBy(target.value)}
       >
         <option value="" disabled>
-          Sort by
+          Sort
         </option>
         {sortValues.map((val) => (
           <option
