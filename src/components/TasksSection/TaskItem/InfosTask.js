@@ -5,22 +5,13 @@ import { useAppDispatch } from "../../../store/hooks";
 import { tasksActions } from "../../../store/Tasks.store";
 import ModalCreateTask from "../../Utilities/ModalTask";
 import Tooltip from "../../Utilities/Tooltip";
+import useDate from "../../hooks/useDate";
 
 const InfosTask = ({ task, isListInView1 }) => {
   const [modalEditTaskOpen, setModalEditTaskOpen] = useState(false);
   const dispatch = useAppDispatch();
 
-  const fullDate = new Date(task.date.replaceAll("-", "/"));
-  const month = fullDate.getMonth() + 1;
-  const day = fullDate.getDate();
-  const year = fullDate.getFullYear();
-
-  const dateFormated =
-    month.toString().padStart(2, "0") +
-    "/" +
-    day.toString().padStart(2, "0") +
-    "/" +
-    year;
+  const dateFormated = useDate(task.date);
 
   const closeModalEditTask = () => {
     setModalEditTaskOpen(false);
@@ -61,7 +52,7 @@ const InfosTask = ({ task, isListInView1 }) => {
           />
         )}
       </div>
-      <p className="description text-slate-400 dark:text-slate-500">
+      <p className="description text-slate-500 dark:text-slate-500">
         {task.description}
       </p>
       <time className="mt-auto flex w-full">

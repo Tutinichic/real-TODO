@@ -74,7 +74,7 @@ const LayoutRoutes = ({ title, tasks }) => {
     if (sortedBy === "min-date" || sortedBy === "max-date") {
       setSortedTasks(sortByDate(sortedBy));
     }
-    if (sortedBy === "") {
+    if (sortedBy === "" || sortedBy === "order-added") {
       setSortedTasks(tasks);
     }
     if (sortedBy === "completed-first") {
@@ -97,8 +97,10 @@ const LayoutRoutes = ({ title, tasks }) => {
         setSortedBy={setSortedBy}
       />
       <ul
-        className={`tasksList mt-4 grid gap-6 ${
-          isListInView1 ? "grid-cols-1" : "grid-cols-3 items-end"
+        className={`tasksList mt-4 grid xl:gap-6 gap-4 ${
+          isListInView1
+            ? "grid-cols-1"
+            : "xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 items-end"
         }`}
       >
         {sortedTasks.map((task) => (
@@ -111,7 +113,7 @@ const LayoutRoutes = ({ title, tasks }) => {
              text-slate-400 w-full rounded-lg
               border-dashed transition hover:bg-slate-300
                hover:text-slate-500
-               dark:border-slate-700 dark:hover:bg-slate-800 ${
+               dark:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-300 ${
                  isListInView1 ? "h-32" : "h-64"
                }`}
           >

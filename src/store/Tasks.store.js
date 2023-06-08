@@ -39,7 +39,7 @@ const initialState = {
       id: "dhsD1",
     },
   ],
-  directories: ["Home", "School"],
+  directories: ["Home", "School", "Main"],
 };
 
 const tasksSlice = createSlice({
@@ -47,7 +47,7 @@ const tasksSlice = createSlice({
   initialState: initialState,
   reducers: {
     addNewTask(state, action) {
-      state.tasks = [...state.tasks, action.payload];
+      state.tasks = [action.payload, ...state.tasks];
     },
     removeTask(state, action) {
       const newTasksList = state.tasks.filter(
@@ -79,17 +79,31 @@ const tasksSlice = createSlice({
       state.tasks = [];
     },
     createDirectory(state, action) {
-      const newDirectoryName = action.payload;
-      const directoryAlreadyExists =
-        state.directories.includes(newDirectoryName);
+      const newDirectory = action.payload;
+      const directoryAlreadyExists = state.directories.includes(newDirectory);
       if (directoryAlreadyExists) return;
-      state.directories = [newDirectoryName, ...state.directories];
+      state.directories = [newDirectory, ...state.directories];
     },
     deleteDirectory(state, action) {
       const dirName = action.payload;
 
       state.directories = state.directories.filter((dir) => dir !== dirName);
       state.tasks = state.tasks.filter((task) => task.dir !== dirName);
+    },
+    editDirectoryName(state, action) {
+      const newDirName = action.payload.newDirName;
+      const previousDirName = action.payload.previousDirName;
+      const directoryAlreadyExists = state.directories.includes(newDirName);
+      if (directoryAlreadyExists) return;
+
+      const dirIndex = state.directories.indexOf(previousDirName);
+
+      state.directories[dirIndex] = newDirName;
+      state.tasks.forEach((task) => {
+        if (task.dir === previousDirName) {
+          task.dir = newDirName;
+        }
+      });
     },
   },
 });

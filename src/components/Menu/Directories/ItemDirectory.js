@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../../store/hooks";
 import { tasksActions } from "../../../store/Tasks.store";
-import Trash from "../../../assets/trash.svg";
 import ModalConfirm from "../../Utilities/ModalConfirm";
+import useVisibility from "../../hooks/useVisibility";
+import Trash from "../../../assets/trash.svg";
+import Edit from "../../../assets/edit.svg";
 
 const ItemDirectory = ({ dir, classActive }) => {
   const route = useLocation();
@@ -11,11 +13,40 @@ const ItemDirectory = ({ dir, classActive }) => {
 
   const dispatch = useAppDispatch();
 
+  const refInputEditDir = useRef(null);
+  const refButtonEditDir = useRef(null);
   const [modalIsShown, setModalIsShown] = useState(false);
+  const [newDirName, setNewDirName] = useState(dir);
 
   const deleteDirectoryHandler = () => {
     dispatch(tasksActions.deleteDirectory(dir));
   };
+
+  const editingDirNameHandler = () => {
+    showInputDir();
+  };
+
+  const confirmEditDirNameHandler = () => {
+    dispatch(
+      tasksActions.editDirectoryName({
+        previousDirName: dir,
+        newDirName: newDirName,
+      })
+    );
+  };
+
+  const { elementIsVisible: inputDirIsVisible, showElement: showInputDir } =
+    useVisibility(
+      [refInputEditDir.current, refButtonEditDir.current],
+      confirmEditDirNameHandler
+    );
+
+  useEffect(() => {
+    if (inputDirIsVisible) {
+      refInputEditDir.current.focus();
+      setNewDirName(dir);
+    }
+  }, [dir, inputDirIsVisible]);
 
   return (
     <>
@@ -27,20 +58,39 @@ const ItemDirectory = ({ dir, classActive }) => {
         />
       )}
       <li
-        className={`flex justify-between pr-4 itemDirectory ${
+        className={`flex items-center pr-4 pl-9 py-2 itemDirectory ${
           currentPath === "/" + dir ? classActive : ""
         }`}
       >
-        <NavLink
-          to={`/${dir}`}
-          className={`pr-4 pl-9 py-2 block hover:text-rose-600 dark:hover:text-slate-200 `}
-        >
-          {dir}
-        </NavLink>
+        <input
+          type="text"
+          value={newDirName}
+          onChange={({ target }) => setNewDirName(target.value)}
+          className={`inputStyles w-28 ${
+            inputDirIsVisible ? "visible" : "hidden"
+          }`}
+          ref={refInputEditDir}
+        />
+        {!inputDirIsVisible && (
+          <NavLink
+            to={`/${dir}`}
+            title={dir}
+            className="hover:text-rose-600 dark:hover:text-slate-200 text-ellipsis whitespace-nowrap overflow-hidden max-w-[7rem]"
+          >
+            {dir}
+          </NavLink>
+        )}
 
-        <button onClick={() => setModalIsShown(true)}>
-        <img src={Trash} alt="" className="w-5 h-5"/>
-        </button>
+        {dir !== "Main" && (
+          <div className="ml-auto buttonsDir">
+            <button onClick={editingDirNameHandler} ref={refButtonEditDir}>
+              <img src={Edit} alt="" className="w-5 h-5 mr-2"/>
+            </button>
+            <button onClick={() => setModalIsShown(true)}>
+            <img src={Trash} alt="" className="w-5 h-5"/>
+            </button>
+          </div>
+        )}
       </li>
     </>
   );
