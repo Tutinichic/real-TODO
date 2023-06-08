@@ -39,6 +39,7 @@ const initialState = {
       id: "dhsD1",
     },
   ],
+  directories: ["Home", "School"],
 };
 
 const tasksSlice = createSlice({
@@ -62,6 +63,13 @@ const tasksSlice = createSlice({
     },
     deleteAllTasks(state) {
       state.tasks = [];
+    },
+    createDirectory(state, action) {
+      const newDirectoryName = action.payload;
+      const directoryAlreadyExists =
+        state.directories.includes(newDirectoryName);
+      if (directoryAlreadyExists) return;
+      state.directories = [...state.directories, newDirectoryName];
     },
   },
 });

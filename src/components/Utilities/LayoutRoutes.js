@@ -17,6 +17,10 @@ const LayoutRoutes = ({ title, tasks }) => {
     dispatch(modalActions.openModalHandler());
   };
 
+  const tasksTitle = `${title} (${tasks.length} ${
+    tasks.length === 1 ? "task" : "tasks"
+  })`;
+
   useEffect(() => {
     const sortByDate = (order) => {
       const toMillisseconds = (date) => Date.parse(date);
@@ -84,7 +88,7 @@ const LayoutRoutes = ({ title, tasks }) => {
   return (
     <section>
       <h1 className="font-medium my-8 text-2xl dark:text-slate-200">
-        {title} ({tasks.length} tasks)
+        {tasksTitle}
       </h1>
       <ButtonsSort
         isListInView1={isListInView1}

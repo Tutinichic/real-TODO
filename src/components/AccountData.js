@@ -41,7 +41,7 @@ const AccountData = () => {
           </div>
         </div>
       )}
-      <div className="mt-4">
+      <div className="mt-6">
         <span className="flex justify-between mb-2">
           <span>All tasks </span> {allTasksDone.length}/{tasks.length}
         </span>
@@ -50,8 +50,12 @@ const AccountData = () => {
         </div>
       </div>
 
-      {todaysTasks.length === 0 && <span>No tasks today</span>}
-    </section>
+      {todaysTasks.length === 0 && (
+        <span className="mt-6 block pt-4 border-t-slate-800 border-t-2">
+          No tasks today
+        </span>
+      )}
+      </section>
   );
 };
 
