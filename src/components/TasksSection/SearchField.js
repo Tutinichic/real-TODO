@@ -1,15 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { useAppSelector } from "../../store/hooks";
+import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import Search from "../../assets/search.svg";
+import useDate from "../hooks/useDate";
+import useSearchQuery from "../hooks/useSearchQuery";
 import useVisibility from "../hooks/useVisibility";
 
+const ItemSearch = ({ task }) => {
+  const dateFormated = useDate(task.date);
+  return (
+    <li key={task.id} className="py-2">
+      <Link
+        to="/"
+        className="flex justify-between transition hover:text-rose-500 dark:hover:text-slate-200"
+      >
+        <span>{task.title}</span>
+        <span className="">{dateFormated}</span>
+      </Link>
+    </li>
+  );
+};
+
 const SearchField = () => {
-  const tasks = useAppSelector((state) => state.tasks.tasks);
+  const navigate = useNavigate();
 
   const searchResultsRef = useRef(null);
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [matchedTasks, setMatchedTasks] = useState([]);
+
+  const matchedTasks = useSearchQuery(searchInputValue);
+
+  const tasks = matchedTasks.slice(0, 4);
 
   const {
     elementIsVisible: listResultsVisible,
@@ -17,16 +36,14 @@ const SearchField = () => {
     closeElement: closeListResults,
   } = useVisibility([searchResultsRef.current], () => setSearchInputValue(""));
 
-  useEffect(() => {
-    const filteredTasks = tasks.filter((task) => {
-      return task.title.toLowerCase().includes(searchInputValue);
+  const navigateToSearchResults = () => {
+    navigate({
+      pathname: "results",
+      search: createSearchParams({
+        q: searchInputValue,
+      }).toString(),
     });
-    if (searchInputValue.trim().length) {
-      setMatchedTasks(filteredTasks);
-    } else {
-      setMatchedTasks([]);
-    }
-  }, [searchInputValue, tasks]);
+  };
 
   useEffect(() => {
     if (searchInputValue.trim().length > 0) {
@@ -50,25 +67,25 @@ const SearchField = () => {
       />
       <img src={Search} alt="" className="absolute w-5 right-4 top-3.5 text-slate-400" />
       {listResultsVisible && (
-        <div className="absolute bg-slate-100 rounded-md w-full top-14 p-3 dark:bg-slate-800">
-        {matchedTasks.length ? (
-          <ul className=" divide-y-2 divide-slate-200 dark:divide-slate-700">
-            {matchedTasks.map((task) => (
-              <li key={task.id} className="py-2">
-                <Link
-                  to="/"
-                  className="flex justify-between transition hover:text-rose-500 dark:hover:text-slate-200"
-                >
-                  <span>{task.title}</span>
-                  <span className="text-slate-400">{task.date}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <span>No tasks found</span>
-        )}
-      </div>
+        <div className="absolute bg-slate-100 rounded-md w-full top-14 p-3 dark:bg-slate-800 z-10">
+          {tasks.length ? (
+            <>
+              <ul>
+                {tasks.map((task) => (
+                  <ItemSearch key={task.id} task={task} />
+                ))}
+              </ul>
+              <button
+                onClick={navigateToSearchResults}
+                className="bg-rose-100 w-full p-2 rounded-md text-rose-600 dark:bg-slate-700/[.3] dark:text-slate-200"
+              >
+                All results for "{searchInputValue}"
+              </button>
+            </>
+          ) : (
+            <span>No tasks found</span>
+          )}
+        </div>
       )}
     </form>
   );

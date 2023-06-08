@@ -13,7 +13,7 @@ const Tooltip = ({ txt, children, className }) => {
         {children}
       </span>
       <div
-        className={`absolute bg-slate-200 rounded-md w-max py-1 px-2 top-full text-slate-600 shadow-md ${
+        className={`absolute bg-slate-600 dark:bg-black rounded-md w-max py-1 px-2 top-full text-slate-600 shadow-md ${
           tooltipVisible ? "visible" : "invisible"
         }`}
       >
