@@ -3,7 +3,8 @@ import OptionsSvg from "../../../assets/options.svg";
 import Calendar from "../../../assets/date.svg";
 import { useAppDispatch } from "../../../store/hooks";
 import { tasksActions } from "../../../store/Tasks.store";
-import ModalCreateTask from "../../Utilities/ModalCreateTask";
+import ModalCreateTask from "../../Utilities/ModalTask";
+import Tooltip from "../../Utilities/Tooltip";
 
 const InfosTask = ({ task, isListInView1 }) => {
   const [modalEditTaskOpen, setModalEditTaskOpen] = useState(false);
@@ -43,12 +44,14 @@ const InfosTask = ({ task, isListInView1 }) => {
         <span className="block font-medium dark:text-slate-200">
           {task.title}
         </span>
-        <button
-          className="rounded-full hover:bg-slate-200 w-8 h-8 grid place-items-center dark:hover:bg-slate-800"
-          onClick={openModalEditTask}
-        >
+        <Tooltip txt="edit task">
+          <button
+            className="rounded-full hover:bg-slate-200 w-8 h-8 grid place-items-center dark:hover:bg-slate-800"
+            onClick={openModalEditTask}
+          >
             <img src={OptionsSvg} alt="" className="w-5 h-5" />
-        </button>
+          </button>
+        </Tooltip>
         {modalEditTaskOpen && (
           <ModalCreateTask
             onClose={closeModalEditTask}

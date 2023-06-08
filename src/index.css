@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .inputStyles {
-  @apply bg-slate-100 text-slate-600 rounded-lg p-3 outline-transparent border-2 border-transparent hover:border-violet-600 focus:border-violet-600 focus:outline-none transition dark:bg-slate-800/[.5];
+  @apply bg-slate-100 text-slate-600 dark:text-slate-200 rounded-lg p-3 outline-transparent border-2 border-transparent hover:border-violet-600 focus:border-violet-600 focus:outline-none transition dark:bg-slate-800/[.5];
 }
 
 .btn {
@@ -55,5 +55,11 @@
   }
   .barProgress > div {
     @apply bg-orange-500 h-full;
+  }
+  .itemDirectory > button {
+    @apply opacity-0 transition;
+  }
+  .itemDirectory:hover > button {
+    @apply opacity-100;
   }
 }
