@@ -8,25 +8,17 @@ import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 import App from "./App.js";
 import { renderHook } from "@testing-library/react-hooks";
-
-
+import { MemoryRouter } from "react-router-dom";
 import DarkMode from "./components/AccountSection/DarkMode";
-
-
 import useCompletedTasks from "./components/hooks/useCompletedTasks";
 import useDate from "./components/hooks/useDate";
 import useSortTasks from "./components/hooks/useSortTasks";
 import useVisibility from "./components/hooks/useVisibility";
-
-
-
+import NavLinks from "./components/Menu/NavLinks";
 import BtnAddTask from "./components/Utilities/BtnAddTask";
 import LayoutMenus from "./components/Utilities/LayoutMenus";
-
 import Modal from "./components/Utilities/Modal";
 import ModalConfirm from "./components/Utilities/ModalConfirm";
-
-
 
 const mockStore = configureStore([]);
 const store = mockStore({});
@@ -37,15 +29,27 @@ jest.mock("react-dom", () => ({
   unmountComponentAtNode: (container) => true,
 }));
 
+test("renders navigation links correctly", () => {
+  // Render the NavLinks component
+  render(
+    <MemoryRouter initialEntries={["/today"]}>
+      <NavLinks classActive="active" />
+    </MemoryRouter>
+  );
 
+  // Verify that the navigation links are rendered correctly
+  const todayLink = screen.getByRole("link", { name: "Today's tasks" });
+  const allTasksLink = screen.getByRole("link", { name: "All tasks" });
+  const importantTasksLink = screen.getByRole("link", { name: "Important tasks" });
+  const tasksDoneLink = screen.getByRole("link", { name: "Tasks done" });
+  const upcomingTasksLink = screen.getByRole("link", { name: "Upcoming tasks" });
 
-
-
-
-
-
-
-
+  expect(todayLink).toHaveClass("active");
+  expect(allTasksLink).not.toHaveClass("active");
+  expect(importantTasksLink).not.toHaveClass("active");
+  expect(tasksDoneLink).not.toHaveClass("active");
+  expect(upcomingTasksLink).not.toHaveClass("active");
+});
 
 test("updates element visibility correctly", () => {
   const { result } = renderHook(() => useVisibility());
