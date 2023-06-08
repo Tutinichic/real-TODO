@@ -6,9 +6,9 @@ import LayoutRoutes from "../Utilities/LayoutRoutes";
 const DoneTasks = ({ done, title }) => {
   const tasks = useAppSelector((state) => state.tasks.tasks);
 
-  const tasksDone = useCompletedTasks({ tasks, done });
+  const { tasks: tasksFiltered } = useCompletedTasks({ tasks, done });
 
-  return <LayoutRoutes title={title} tasks={tasksDone}></LayoutRoutes>;
+  return <LayoutRoutes title={title} tasks={tasksFiltered}></LayoutRoutes>;
 };
 
 export default DoneTasks;

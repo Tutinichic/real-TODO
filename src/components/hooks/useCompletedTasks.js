@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useCompletedTasks = (props) => {
-  const [tasksDone, setTasksDone] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const filteredTasks = props.tasks.filter((task) => {
@@ -11,10 +11,10 @@ const useCompletedTasks = (props) => {
         return !task.completed;
       }
     });
-    setTasksDone(filteredTasks);
+    setTasks(filteredTasks);
   }, [props.tasks, props.done]);
 
-  return tasksDone;
+  return { tasks };
 };
 
 export default useCompletedTasks;

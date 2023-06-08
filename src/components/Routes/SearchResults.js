@@ -20,12 +20,9 @@ const SearchResults = () => {
 
   const matchedTasks = useSearchQuery(currQueryParam);
 
-  return (
-    <LayoutRoutes
-      title={`Results for "${currQueryParam}"`}
-      tasks={matchedTasks}
-    ></LayoutRoutes>
-  );
+  const title = `Results for "${currQueryParam}"`;
+
+  return <LayoutRoutes title={title} tasks={matchedTasks}></LayoutRoutes>;
 };
 
 export default SearchResults;

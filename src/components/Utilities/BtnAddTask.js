@@ -8,9 +8,10 @@ const BtnAddTask = ({ className }) => {
   const onOpenModal = () => {
     dispatch(modalActions.openModalCreateTask());
   };
+
   return (
     <>
-      <button className={`btn  ${className}`} onClick={onOpenModal}>
+      <button className={`btn ${className}`} onClick={onOpenModal}>
         Add task
       </button>
     </>

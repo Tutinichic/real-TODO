@@ -1,5 +1,5 @@
 import React from "react";
-import AccountData from "./components/AccountData";
+import AccountData from "./components/AccountSection/AccountData";
 import Menu from "./components/Menu/Menu";
 import TasksSection from "./components/TasksSection/TasksSection";
 import ModalCreateTask from "./components/Utilities/ModalTask";
@@ -21,7 +21,7 @@ const App = () => {
   };
 
   return (
-    <div className="bg-slate-200 min-h-screen text-slate-600 dark:bg-slate-900 dark:text-slate-400 xl:text-base sm:text-sm">
+    <div className="bg-slate-200 min-h-screen text-slate-600 dark:bg-slate-900 dark:text-slate-400 xl:text-base sm:text-sm text-xs">
       {modal.modalCreateTaskOpen && (
         <ModalCreateTask
           onClose={closeModalCreateTask}

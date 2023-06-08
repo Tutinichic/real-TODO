@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
 import { modalActions } from "../../store/Modal.store";
+import useSortTasks from "../hooks/useSortTasks";
 import ButtonsSort from "../TasksSection/ButtonsSort";
 import TaskItem from "../TasksSection/TaskItem/TaskItem";
 
 const LayoutRoutes = ({ title, tasks }) => {
   const [isListInView1, setIsListInView1] = useState(false);
 
-  const [sortedBy, setSortedBy] = useState("");
-
-  const [sortedTasks, setSortedTasks] = useState(tasks);
-
   const dispatch = useAppDispatch();
+
+  const { sortedBy, setSortedBy, sortedTasks } = useSortTasks(tasks);
 
   const openModalHandler = () => {
     dispatch(modalActions.openModalCreateTask());
@@ -21,73 +20,9 @@ const LayoutRoutes = ({ title, tasks }) => {
     tasks.length === 1 ? "task" : "tasks"
   })`;
 
-  useEffect(() => {
-    const sortByDate = (order) => {
-      const toMillisseconds = (date) => Date.parse(date);
-      const tasksCopy = [...tasks];
-      const sorted = tasksCopy.sort((task1, task2) => {
-        const date1 = toMillisseconds(task1.date);
-        const date2 = toMillisseconds(task2.date);
-
-        if (date1 < date2) {
-          return -1;
-        }
-
-        if (date1 > date2) {
-          return 1;
-        }
-
-        return 0;
-      });
-
-      if (order === "min-date") {
-        return sorted;
-      }
-
-      if (order === "max-date") {
-        return sorted.reverse();
-      }
-
-      return tasks;
-    };
-
-    const sortByCompletedStatus = (completed) => {
-      const tasksCopy = [...tasks];
-      const sorted = tasksCopy.sort((task1) => {
-        if (task1.completed) {
-          return -1;
-        }
-        return 0;
-      });
-
-      if (completed) {
-        return sorted;
-      }
-
-      if (!completed) {
-        return sorted.reverse();
-      }
-
-      return tasks;
-    };
-
-    if (sortedBy === "min-date" || sortedBy === "max-date") {
-      setSortedTasks(sortByDate(sortedBy));
-    }
-    if (sortedBy === "" || sortedBy === "order-added") {
-      setSortedTasks(tasks);
-    }
-    if (sortedBy === "completed-first") {
-      setSortedTasks(sortByCompletedStatus(true));
-    }
-    if (sortedBy === "uncompleted-first") {
-      setSortedTasks(sortByCompletedStatus(false));
-    }
-  }, [sortedBy, tasks]);
-
   return (
     <section>
-      <h1 className="font-medium my-8 text-2xl dark:text-slate-200">
+      <h1 className="font-medium my-5 text-center sm:text-left sm:my-8 md:text-2xl text-lg dark:text-slate-200">
         {tasksTitle}
       </h1>
       <ButtonsSort
@@ -97,10 +32,10 @@ const LayoutRoutes = ({ title, tasks }) => {
         setSortedBy={setSortedBy}
       />
       <ul
-        className={`tasksList mt-4 grid xl:gap-6 gap-4 ${
+        className={`tasksList mt-4 grid gap-2 sm:gap-4 xl:gap-6 ${
           isListInView1
             ? "grid-cols-1"
-            : "xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 items-end"
+            : "2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 items-end"
         }`}
       >
         {sortedTasks.map((task) => (
@@ -114,7 +49,7 @@ const LayoutRoutes = ({ title, tasks }) => {
               border-dashed transition hover:bg-slate-300
                hover:text-slate-500
                dark:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-300 ${
-                 isListInView1 ? "h-32" : "h-64"
+                 isListInView1 ? "h-20 sm:h-32" : "h-52 sm:h-64"
                }`}
           >
             Add task
@@ -125,4 +60,4 @@ const LayoutRoutes = ({ title, tasks }) => {
   );
 };
 
-export default LayoutRoutes;
+export default React.memo(LayoutRoutes);

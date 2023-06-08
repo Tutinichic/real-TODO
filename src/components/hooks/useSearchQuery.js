@@ -8,7 +8,7 @@ const useSearchQuery = (searchQuery) => {
 
   useEffect(() => {
     const filteredTasks = tasks.filter((task) => {
-      return task.title.toLowerCase().includes(searchQuery);
+      return task.title.toLowerCase().includes(searchQuery.toLowerCase());
     });
     if (searchQuery.trim().length) {
       setMatchedTasks(filteredTasks);
